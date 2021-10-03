@@ -4,6 +4,8 @@ const {
   CleanWebpackPlugin
 } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const Dotenv = require('dotenv-webpack');
+
 
 //relative path to absolute path
 const resolvePath = _path => path.resolve(__dirname, _path);
@@ -53,6 +55,7 @@ const baseConfig = {
     new MiniCssExtractPlugin({
       filename: '[name].[hash:8].css'
     }),
+    new Dotenv(),
   ],
 }
 
