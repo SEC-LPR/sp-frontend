@@ -37,7 +37,13 @@ const baseConfig = {
       },
       {
         test: /\.jsx$/,
-        use: "babel-loader"
+        use: "babel-loader",
+        resolve: {
+          alias: {
+            src: path.resolve(__dirname, '../src')
+          },
+          extensions: ['.js', '.jsx'],
+        },
       },
       {
         test: /\.svg$/,
