@@ -1,0 +1,16 @@
+node_modules
+dist
+public
+*.css
+*.scss
+*.zip
+*.yml
+*.md
+*.json
+*.log
+*.lock
+**/*.snap
+*.sh
+*.svg
+.*
+*.config*

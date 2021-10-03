@@ -15,6 +15,7 @@ const baseConfig = {
   output: {
     path: resolvePath('../dist'),
     filename: '[name].bundle.js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -63,7 +64,7 @@ const baseConfig = {
     new HtmlWebpackPlugin({
       template: resolvePath('../public/index.html'),
       filename: 'index.html',
-      title: 'ebay',
+      title: 'FakeApple',
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({

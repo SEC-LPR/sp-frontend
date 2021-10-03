@@ -14,6 +14,7 @@ module.exports = merge(baseConfig, {
     host: 'localhost',
     port: 3000,
     hot: true,
-    open: true
+    open: true,
+    historyApiFallback: true,
   },
 })
