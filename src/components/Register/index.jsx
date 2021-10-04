@@ -36,16 +36,18 @@ const Register = () => {
         const firstName = data.get('firstName');
         const lastName = data.get('lastName');
         const password = data.get('password');
-        // try {
-        //     const registerRes = api.register({ username, firstName, lastName, password });
-        //     if (registerRes.status === 200) {
-        //         history.push('/login');
-        //     }
-        // } catch (error) {
-        //     if (error.response.status === 400) {
-        //         setExist(true);
-        //     }
-        // }    
+        try {
+            const registerRes = api.register({ username, firstName, lastName, password });
+            console.log(registerRes);
+            if (registerRes.status === 200) {
+                
+                // history.push('/login');
+            }
+        } catch (error) {
+            if (error.response.status === 400) {
+                setExist(true);
+            }
+        }    
     }
 
     const handleEmailChange = (event) => {

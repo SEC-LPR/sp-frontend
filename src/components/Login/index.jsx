@@ -31,19 +31,20 @@ const Login = () => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const username = data.get('email');
-        const emailCheck = reg.test(username);
         const password = data.get('password');
-        try {
+     
             const loginRes = api.login({ username, password });
             if (loginRes.status === 200) {
                 localStorage.setItem('userId', response.data.id);
                 localStorage.setItem('isLogin', true);
             }
-        } catch (error) {
-            if (error.response.status === 400) {
+
+
+            if (loginRes.status === 403) {
                 setError(true);
+                console.log('1')
             }
-        } 
+
     };
 
     const handleEmailChange = (event) => {
