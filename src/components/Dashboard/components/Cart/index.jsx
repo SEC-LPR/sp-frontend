@@ -12,7 +12,7 @@ const Cart = ({ cartItems, addToCart, removeFromCart }) => {
         const items = [];
         cartItems.map((item, index) => {
             let obj = {
-                id: item.id,
+                productId: item.productId,
                 name: item.productName,
                 amount: item.amount,
                 price: item.price,
@@ -29,7 +29,7 @@ const Cart = ({ cartItems, addToCart, removeFromCart }) => {
         {cartItems.length === 0 ? <p>No items in cart.</p> : null}
         {cartItems.map((item) => (
             <CartItem
-            key={item.id}
+            key={item.productId}
             item={item}
             amount={item.amount} 
             addToCart={addToCart}

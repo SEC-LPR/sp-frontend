@@ -24,27 +24,32 @@ export const register = ({ username, firstName, lastName, password }) => axios({
 
 export const getCartInfo = ( userId ) => axios({
     method: 'get',
-    url: `${baseUrl}/${userId}`,
+    url: `${baseUrl}/cart/${userId}`,
 })
 
 export const removeItemFromCart = ({ userId, productId }) => axios({
     method: 'delete',
-    url: `${baseUrl}/${userId}/${productId}`,
+    url: `${baseUrl}/cart/${userId}/${productId}`,
 })
 
 export const updateItemAmount = ({ userId, productId, amount }) => axios({
     method: 'put',
-    url: `${baseUrl}/${userId}/${productId}`,
+    url: `${baseUrl}/cart/${userId}/${productId}`,
     data: {
+        userId,
+        productId,
         amount,
     }
 })
 
-export const addCreditCard = ({id, cardName, cardNumber, expDate, cvv}) => axios({
+export const addCreditCard = ({userId, cardName, cardNumber, expDate, cvv}) => axios({
     method: 'put',
     url: `${baseUrl}/${userId}/credit`,
     data: {
-        creditCard,
+        cardName,
+        cardNumber,
+        expDate,
+        cvv
     }
 })
 

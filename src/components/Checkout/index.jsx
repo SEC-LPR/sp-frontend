@@ -26,19 +26,23 @@ const theme = createTheme();
 const Checkout = () => {
     const items = JSON.parse(localStorage.getItem('items'));
     const handleSubmit = async (event) => {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      const cardName = data.get('cardName');
-      const cardNumber = data.get('cardNumber');
-      const expDate = data.get('expDate');
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const cardName = data.get('cardName');
+        const cardNumber = data.get('cardNumber');
+        const expDate = data.get('expDate');
+        console.log(cardName)
         const cvv = data.get('cvv');
-        const id = localStorage.getItem("userId")
+        const userId = localStorage.getItem("userId")
+
         try {
-            const checkoutRes = await api.addCreditCard({id, cardName, cardNumber, expDate, cvv});
+            const checkoutRes = await api.addCreditCard({userId, cardName, cardNumber, expDate, cvv});
             if (checkoutRes.status === 200) {
+                console.log('add success')
             }
         } catch (error) {
             if (error.response.status === 400) {
+                console.log('failed')
             }
         }
     };

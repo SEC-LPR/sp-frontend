@@ -16,8 +16,8 @@ const App = () => (
         <PublicRoute exact path="/" restricted={false} component={Login} />
         <PublicRoute path="/login" restricted={false} component={Login} />
         <PublicRoute path="/register" restricted={true} component={Register} />
-        <PublicRoute path="/dashboard" component={Dashboard} />
-        <PublicRoute path="/checkout" component={Checkout} />
+        <PrivateRoute path="/dashboard" component={Dashboard} />
+        <PrivateRoute path="/checkout" component={Checkout} />
         <PublicRoute path="/test" component={Test} />
 
         </Switch>

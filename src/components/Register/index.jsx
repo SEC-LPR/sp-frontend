@@ -29,7 +29,7 @@ const Register = () => {
     const [email, setEmail] = useState(false);
     const [psw, setPsw] = useState(false);
     const history = useHistory();
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const username = data.get('email');
@@ -37,14 +37,12 @@ const Register = () => {
         const lastName = data.get('lastName');
         const password = data.get('password');
         try {
-            const registerRes = api.register({ username, firstName, lastName, password });
-            console.log(registerRes);
+            const registerRes = await api.register({ username, firstName, lastName, password });
             if (registerRes.status === 200) {
-                
-                // history.push('/login');
+                history.push('/login');
             }
         } catch (error) {
-            if (error.response.status === 400) {
+            if (error.response.status === 500) {
                 setExist(true);
             }
         }    
@@ -54,7 +52,6 @@ const Register = () => {
         const email = event.target.value;
         const emailReg = new RegExp(/^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/);
         const emailCheck = emailReg.test(email);
-        console.log(emailCheck);
         if (!emailCheck) {
             setEmail(true);
         } else {

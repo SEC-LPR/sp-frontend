@@ -9,7 +9,7 @@ const CartItem = ({ item, amount, addToCart, removeFromCart }) => {
             {amount === 0
                 ||
                 <div className="item">
-                    <h3>{item.title}</h3>
+                    <h3>{item.productName}</h3>
                     <div className="information">
                         <p>Price: ${item.price}</p>
                         <p>Total: ${(item.amount * item.price).toFixed(2)}</p>
@@ -19,7 +19,7 @@ const CartItem = ({ item, amount, addToCart, removeFromCart }) => {
                             size="small"
                             disableElevation
                             variant="contained"
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => removeFromCart(item.productId)}
                         >
                             -
                         </Button>

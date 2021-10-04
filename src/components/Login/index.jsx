@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
     Link,
+    useHistory,
 } from 'react-router-dom';
 import {
     Avatar,
@@ -25,33 +26,32 @@ import * as api from 'src/utils/apiUtil';
 const theme = createTheme();
 
 const Login = () => {
+    const history = useHistory();
     const [error, setError] = useState(false);
     const [email, setEmail] = useState(false);
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const username = data.get('email');
         const password = data.get('password');
-     
-            const loginRes = api.login({ username, password });
+        try {
+            const loginRes = await api.login({ username, password });
             if (loginRes.status === 200) {
-                localStorage.setItem('userId', response.data.id);
+                localStorage.setItem('userId', loginRes.data.id);
                 localStorage.setItem('isLogin', true);
+                history.push('/dashboard');
             }
-
-
-            if (loginRes.status === 403) {
+        } catch (error) {
+            if (error.response.status === 403) {
                 setError(true);
-                console.log('1')
             }
-
+        }
     };
 
     const handleEmailChange = (event) => {
         const email = event.target.value;
         const emailReg = new RegExp(/^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/);
         const emailCheck = emailReg.test(email);
-        console.log(emailCheck);
         if (!emailCheck) {
             setEmail(true);
         } else {

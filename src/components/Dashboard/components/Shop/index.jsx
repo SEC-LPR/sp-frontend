@@ -20,34 +20,16 @@ const Shop = () => {
     const [cartItems, setCartItems] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const productData = 
-    [
-        {
-            "id": 1,
-            "productName": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-            "price": 109.95,
-            "amount": 10,
-        },
-        {
-            "id": 2,
-            "productName": "Mens Casual Premium Slim Fit T-Shirts ",
-            "price": 22.3,
-            "amount": 2,
-        },
-        {
-            "id": 3,
-            "productName": "Mens Cotton Jacket",
-            "price": 55.99,
-            "amount": 1,
-        },
-        ]
+    const productData = [{"productId":1,"productName":"Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops","amount":10,"price":109},{"productId":2,"productName":"Mens Casual Premium Slim Fit T-Shirts","amount":5,"price":22},{"productId":3,"productName":"Mens Cotton Jacket","amount":1,"price":55}]
     
-        const getCartData = () => {
-            // const userId = localStorage.getItem("userId");
+    const getCartData = async () => {
+            setIsLoading(true);
+            const userId = localStorage.getItem("userId");
             try {
-                const cartRes = api.getCartInfo(userId);
+                const cartRes =await api.getCartInfo(userId);
                 if (cartRes.status === 200) {
-                    // setCartItems(cartItems.data);
+                    setCartItems(cartRes.data);
+                    setIsLoading(false);
                 }
             } catch (error) {
                 if (error.response.status === 400) {
@@ -57,18 +39,18 @@ const Shop = () => {
         }
 
     useEffect(() => {
-        setIsLoading(true);
-        setCartItems(productData);
-        // getCartData();
-        setIsLoading(false);
+       
+        // setCartItems(productData);
+        getCartData();
+        
     },[])
 
-    const handleAddToCart = (clickedItem) => {
+    const handleAddToCart = async (clickedItem) => {
         setCartItems((prev) => {
-        const isItemInCart = prev.find((item) => item.id === clickedItem.id);
+        const isItemInCart = prev.find((item) => item.productId === clickedItem.productId);
         if (isItemInCart) {
             return prev.map((item) =>
-            item.id === clickedItem.id
+            item.productId === clickedItem.productId
                 ? { ...item, amount: item.amount + 1 }
                 : item
             );
@@ -77,25 +59,26 @@ const Shop = () => {
         });
         
         
-        const productId = clickedItem.id;
+        const productId = clickedItem.productId;
         const amount = clickedItem.amount + 1;
-        // const userId = localStorage.getItem("userId");
-        // try {
-        //     const updateRes = api.updateItemAmount({ userId, productId, amount });
-        //     if (updateRes.status === 200) {
-        //         console.log('update success');
-        //     }
-        // } catch (error) {
-        //     if (error.response.status === 400) {
-        //         alert('update failed');
-        //     }
-        // }
+        console.log(productId, amount)
+        const userId = localStorage.getItem("userId");
+        try {
+            const updateRes = await api.updateItemAmount({ userId, productId, amount });
+            if (updateRes.status === 200) {
+                console.log('update success');
+            }
+        } catch (error) {
+            if (error.response.status === 400) {
+                alert('update failed');
+            }
+        }
     };
 
-    const handleRemoveFromCart = (id) => {
+    const handleRemoveFromCart =async (id) => {
         setCartItems((prev) =>
             prev.reduce((acc, item) => {
-                if (item.id === id) {
+                if (item.productId === id) {
                 if (item.amount === 1) return acc;
                 return [...acc, { ...item, amount: item.amount - 1 }];
                 } else {
@@ -103,31 +86,33 @@ const Shop = () => {
                 }
             }, [])
         );
-        const data = cartItems.find((item) => item.id === id )
-        const productId = data.id;
+        const data = cartItems.find((item) => item.productId === id )
+        const productId = data.productId;
         const amount = data.amount - 1;
-        // const userId = localStorage.getItem("userId");
-        // if (amount === 0) {
-        //     try {
-        //         const deleteRes = api.removeItemFromCart({ userId, productId });
-        //         if (deleteRes.status === 200) {
-        //             console.log('remove success');
-        //         }
-        //     } catch (error) {
-        //         alert('remove failed');
-        //     }
- 
-        // }
-        // try {
-        //     const updateRes = api.updateItemAmount({ userId, productId, amount });
-        //     if (updateRes.status === 200) {
-        //         console.log('update success');
-        //     }
-        // } catch (error) {
-        //     if (error.response.status === 400) {
-        //         alert('update failed');
-        //     }
-
+        console.log(productId, amount)
+        const userId = localStorage.getItem("userId");
+        if (amount === 0) {
+            try {
+                const deleteRes =await api.removeItemFromCart({ userId, productId });
+                if (deleteRes.status === 200) {
+                    console.log('remove success');
+                }
+            } catch (error) {
+                alert('remove failed');
+            }
+        } else {
+            try {
+                const updateRes =await api.updateItemAmount({ userId, productId, amount });
+                if (updateRes.status === 200) {
+                    console.log('update success');
+                }
+            } catch (error) {
+                if (error.response.status === 400) {
+                    alert('update failed');
+                }
+            }
+        }
+        
     };
 
     if (isLoading) return <LinearProgress />;
