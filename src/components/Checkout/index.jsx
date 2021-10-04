@@ -101,7 +101,7 @@ const Checkout = () => {
               )}
             </React.Fragment>
           </Paper>
-          <Copyright />
+          <Copyright sx={{ mt: 10 }} />
         </Container>
       </ThemeProvider>
     )

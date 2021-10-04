@@ -18,6 +18,7 @@ import AppleIcon from '@mui/icons-material/Apple';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import loginBG from '../Login/login.jpg';
 import Copyright from 'src/components/Copyright';
+import * as api from 'src/utils/apiUtil';
 
 const theme = createTheme();
 
@@ -25,11 +26,19 @@ const Login = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const username = data.get('email');
+        const password = data.get('password');
+        try {
+            const loginRes = api.login({ username, password });
+            if (loginRes.status === 200) {
+                localStorage.setItem('username', username);
+                localStorage.setItem('isLogin', true);
+            }
+        } catch (error) {
+            if (error.response.status === 400) {
+                alert('email or password is incorrect');
+            }
+        }
     };
     
     return (

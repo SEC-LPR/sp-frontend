@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     Link,
+    useHistory,
 } from 'react-router-dom';
 import {
     Avatar,
@@ -15,31 +16,30 @@ import {
 import DesktopMacIcon from '@mui/icons-material/DesktopMac';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import registerBG from '../Register/register.jpg';
+import Copyright from 'src/components/Copyright';
+import * as api from 'src/utils/apiUtil';
 
 const theme = createTheme();
 
-const Copyright = (props) => {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                FakeApple
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-};
-
 const Register = () => {
+    const history = useHistory();
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const username = data.get('email');
+        const firstName = data.get('firstName');
+        const lastName = data.get('lastName');
+        const password = data.get('password');
+        try {
+            const registerRes = api.register({ username, firstName, lastName, password });
+            if (registerRes.status === 200) {
+                history.push('/login');
+            }
+        } catch (error) {
+            if (error.response.status === 400) {
+                alert('Already registered');
+            }
+        }
     }
     return (
         <ThemeProvider theme={theme}>
@@ -64,11 +64,12 @@ const Register = () => {
                             Create Your FakeApple ID
                         </Typography> 
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                            <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus/>
+                            <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
+                            <TextField margin="normal" required fullWidth name="firstName" label="First Name" type="name" id="firstName" autoComplete="first-name" />
+                            <TextField margin="normal" required fullWidth name="lastName" label="Last Name" type="name" id="lastName" autoComplete="last-name" />
                             <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
-                            <TextField margin="normal" required fullWidth name="confirmPassword" label="Confirm Password" type="password" id="password" autoComplete="confirm-password"/>
                             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                                Sign In
+                                Sign Up
                             </Button>
                             <Grid container>
                                 <Grid item xs>
@@ -77,7 +78,7 @@ const Register = () => {
                                     </Link>    
                                 </Grid>
                                 </Grid>
-                            <Copyright sx={{ mt: 50 }} />
+                            <Copyright sx={{ mt: 30 }} />
                         </Box>
                     </Box>
                 </Grid>

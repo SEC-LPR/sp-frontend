@@ -31,7 +31,7 @@ const CartItem = ({ item, addToCart, removeFromCart }) => {
                 </Button>
                 </div>
             </div>
-            <img src={item.image} alt={item.title} className="cardItem_img" />
+            {/* <img src={item.image} alt={item.title} className="cardItem_img" /> */}
         </div>
     );
 };
