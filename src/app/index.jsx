@@ -7,7 +7,7 @@ import { PublicRoute, PrivateRoute } from 'src/utils/customRoutes';
 import Dashboard from 'src/components/Dashboard';
 import Login from 'src/components/Login';
 import Register from 'src/components/Register';
-import Checkout from 'src/components/Dashboard/components/Checkout';
+import Checkout from 'src/components/Checkout';
 
 const App = () => (
     <Router>

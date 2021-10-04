@@ -17,23 +17,9 @@ import {
 import AppleIcon from '@mui/icons-material/Apple';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import loginBG from '../Login/login.jpg';
+import Copyright from 'src/components/Copyright';
 
 const theme = createTheme();
-
-const Copyright = (props) => {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            {new Date().getFullYear()}
-            {' '}
-            <a color="inherit" href="https://www.apple.com/au/">
-                FakeApple Inc
-            </a>{' '}
-            
-           
-        </Typography>
-    );
-};
 
 const Login = () => {
     const handleSubmit = (event) => {
