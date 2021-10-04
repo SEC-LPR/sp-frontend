@@ -21,3 +21,31 @@ export const register = ({ username, firstName, lastName, password }) => axios({
         password
     }
 })
+
+export const getCartInfo = ({ userId }) => axios({
+    method: 'get',
+    url: `${baseUrl}/`,
+    data: {
+        userId
+    }
+})
+
+export const removeItemFromCart = ({ userI, productId }) => axios({
+    method: 'delete',
+    url: `${baseUrl}/`,
+    data: {
+        userId,
+        productId,
+    }
+})
+
+
+export const updateItemAmount = ({ userI, productId, amount }) => axios({
+    method: 'put',
+    url: `${baseUrl}/`,
+    data: {
+        userI,
+        productId,
+        amount,
+    }
+})

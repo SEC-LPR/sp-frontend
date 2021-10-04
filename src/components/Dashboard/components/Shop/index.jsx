@@ -1,14 +1,10 @@
 import React from 'react';
-import { Badge, Drawer, Grid, LinearProgress } from '@mui/material';
-import { AddShoppingCart } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { LinearProgress } from '@mui/material';
 import { useState, useEffect } from "react";
 import '../Shop/Shop.scss';
-import Product from "../Products";
 import Cart from "../Cart";
 
 const Shop = () => {
-    // const [cartOpen, setCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -40,9 +36,6 @@ const Shop = () => {
         setIsLoading(false);
     },[])
 
-    // const getTotalItems = (items) =>
-    //     items.reduce((acc, item) => acc + item.amount, 0);
-
     const handleAddToCart = (clickedItem) => {
         setCartItems((prev) => {
         const isItemInCart = prev.find((item) => item.id === clickedItem.id);
@@ -55,6 +48,12 @@ const Shop = () => {
         }
             return [...prev, { ...clickedItem, amount: 1 }];
         });
+        
+        
+        const productId = clickedItem.id;
+        const amount = clickedItem.amount + 1
+        // const userId = localStorage.getItem("userId");
+        // add update axios call here
     };
 
     const handleRemoveFromCart = (id) => {
@@ -68,33 +67,23 @@ const Shop = () => {
                 }
             }, [])
         );
+        const data = cartItems.find((item) => item.id === id )
+        const productId = data.id;
+        const amount = data.amount - 1;
+        // const userId = localStorage.getItem("userId");
+        // add update axios call here
+
     };
 
     if (isLoading) return <LinearProgress />;
 
     return (
         <div className="shop">
-            {/* <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}> */}
-        <Cart
-            cartItems={cartItems}
-            addToCart={handleAddToCart}
-            removeFromCart={handleRemoveFromCart}
-        />
-        {/* </Drawer> */}
-
-        {/* <IconButton className="iconButton" onClick={() => setCartOpen(true)}>
-            <Badge badgeContent={getTotalItems(cartItems)} color="error">
-            <AddShoppingCart />
-            </Badge>
-        </IconButton> */}
-
-        {/* <Grid container spacing={3}>
-            {data?.map((item) => (
-            <Grid item key={item.id} xs={12} sm={4}>
-                <Product item={item} handleAddToCart={handleAddToCart} />
-            </Grid>
-            ))}
-        </Grid> */}
+            <Cart
+                cartItems={cartItems}
+                addToCart={handleAddToCart}
+                removeFromCart={handleRemoveFromCart}
+            />
         </div>
     );
 }

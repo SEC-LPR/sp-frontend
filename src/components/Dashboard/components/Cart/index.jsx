@@ -31,6 +31,7 @@ const Cart = ({ cartItems, addToCart, removeFromCart }) => {
             <CartItem
             key={item.id}
             item={item}
+            amount={item.amount} 
             addToCart={addToCart}
             removeFromCart={removeFromCart}
             />
