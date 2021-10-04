@@ -4,7 +4,8 @@ import {
     Typography,
     TextField,
     FormControlLabel,
-    Checkbox
+  Checkbox,
+    Box
   } from '@mui/material';
 
 const PaymentForm = () => {
@@ -18,6 +19,7 @@ const PaymentForm = () => {
           <TextField
             required
             id="cardName"
+            name="cardName"
             label="Name on card"
             fullWidth
             autoComplete="cc-name"
@@ -28,6 +30,7 @@ const PaymentForm = () => {
           <TextField
             required
             id="cardNumber"
+            name="cardNumber"
             label="Card number"
             fullWidth
             autoComplete="cc-number"
@@ -38,6 +41,7 @@ const PaymentForm = () => {
           <TextField
             required
             id="expDate"
+            name="expDate"
             label="Expiry date"
             fullWidth
             autoComplete="cc-exp"
@@ -48,6 +52,7 @@ const PaymentForm = () => {
           <TextField
             required
             id="cvv"
+            name="cvv"
             label="CVV"
             helperText="Last three digits on signature strip"
             fullWidth

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Link,
 } from 'react-router-dom';
@@ -18,28 +18,45 @@ import AppleIcon from '@mui/icons-material/Apple';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import loginBG from '../Login/login.jpg';
 import Copyright from 'src/components/Copyright';
+import LoginErrorMessage from '../ErrorMessage/loginError';
+import EmailErrorMessage from '../ErrorMessage/emailError';
 import * as api from 'src/utils/apiUtil';
 
 const theme = createTheme();
 
 const Login = () => {
+    const [error, setError] = useState(false);
+    const [email, setEmail] = useState(false);
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const username = data.get('email');
+        const emailCheck = reg.test(username);
         const password = data.get('password');
         try {
             const loginRes = api.login({ username, password });
             if (loginRes.status === 200) {
-                localStorage.setItem('username', username);
+                localStorage.setItem('userId', response.data.id);
                 localStorage.setItem('isLogin', true);
             }
         } catch (error) {
             if (error.response.status === 400) {
-                alert('email or password is incorrect');
+                setError(true);
             }
-        }
+        } 
     };
+
+    const handleEmailChange = (event) => {
+        const email = event.target.value;
+        const emailReg = new RegExp(/^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/);
+        const emailCheck = emailReg.test(email);
+        console.log(emailCheck);
+        if (!emailCheck) {
+            setEmail(true);
+        } else {
+            setEmail(false);
+        }
+    }
     
     return (
         <ThemeProvider theme={theme}>
@@ -62,9 +79,11 @@ const Login = () => {
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
-                    </Typography> 
+                    </Typography>
+                        {error && <LoginErrorMessage />}
+                        {email && <EmailErrorMessage />}
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                        <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus/>
+                        <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus onChange={handleEmailChange}/>
                         <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password"
                         />
                         <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />

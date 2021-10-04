@@ -13,7 +13,7 @@ const Cart = ({ cartItems, addToCart, removeFromCart }) => {
         cartItems.map((item, index) => {
             let obj = {
                 id: item.id,
-                name: item.title,
+                name: item.productName,
                 amount: item.amount,
                 price: item.price,
             }
