@@ -14,6 +14,8 @@ import '../Shop/Shop.scss';
 import Cart from "../Cart";
 import * as api from 'src/utils/apiUtil';
 import FullErrorMessage from 'src/components/ErrorMessage/fullError'
+import exchangeKey from 'src/components/Common/exchangeKey';
+import { encryptDES } from 'src/components/Common/useDES';
 
 const theme = createTheme();
 
@@ -46,7 +48,6 @@ const Shop = () => {
     },[])
 
     const handleAddToCart = async (clickedItem) => {
-        console.log(clickedItem);
         setCartItems((prev) => {
             const isItemInCart = prev.find((item) => item.productId === clickedItem.productId);
         if(isItemInCart.amount >= isItemInCart.productAmount) {
@@ -67,31 +68,33 @@ const Shop = () => {
         });
         
         
-        const productId = clickedItem.productId;
-        if (clickedItem.amount +1 <= clickedItem.productAmount) {
-            const amount = clickedItem.amount + 1;
-            console.log(productId, amount)
-        const userId = localStorage.getItem("userId");
-        // const getRSA = await api.getRSA();
-        // const exchangeDES = await api.exchangeDES();
-        try {
-            const updateRes = await api.updateItemAmount({ userId, productId, amount });
-            if (updateRes.status === 200) {
-                console.log('update success');
+        const productIdS = clickedItem.productId;
+        if (clickedItem.amount + 1 <= clickedItem.productAmount) {
+            setFull(false)
+            const amountS = clickedItem.amount + 1;
+            const userId = localStorage.getItem("userId");
+            exchangeKey();
+            const amount = amountS.toString();
+            const productId = productIdS.toString();
+            console.log(userId+ " " +amount  + " " + productId)
+            try {
+                const updateRes = await api.updateItemAmount({ userId, productId, amount });
+                if (updateRes.status === 200) {
+                    console.log('update success');
+                }
+            } catch (error) {
+                if (error.response.status === 400) {
+                    alert('update failed');
+                }
             }
-        } catch (error) {
-            if (error.response.status === 400) {
-                alert('update failed');
-            }
-        }
         } else {
             setFull(true)
         }
-       
-       
+
     };
 
-    const handleRemoveFromCart =async (id) => {
+    const handleRemoveFromCart = async (id) => {
+        setFull(false)
         setCartItems((prev) =>
             prev.reduce((acc, item) => {
                 if (item.productId === id) {

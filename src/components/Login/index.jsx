@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Link,
     useHistory,
@@ -22,6 +22,8 @@ import Copyright from 'src/components/Copyright';
 import LoginErrorMessage from '../ErrorMessage/loginError';
 import EmailErrorMessage from '../ErrorMessage/emailError';
 import * as api from 'src/utils/apiUtil';
+import exchangeKey from 'src/components/Common/exchangeKey';
+import { encryptDES } from 'src/components/Common/useDES';
 
 const theme = createTheme();
 
@@ -32,8 +34,12 @@ const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const username = data.get('email');
-        const password = data.get('password');
+        const username = encryptDES(data.get('email'));
+        const password = encryptDES(data.get('password'));
+        console.log(username);
+        console.log(password);
+        // const username = data.get('email');
+        // const password = data.get('password');
         try {
             const loginRes = await api.login({ username, password });
             if (loginRes.status === 200) {
@@ -48,6 +54,10 @@ const Login = () => {
         }
     };
 
+    useEffect(() => {
+        exchangeKey();
+    }, [])
+    
     const handleEmailChange = (event) => {
         const email = event.target.value;
         const emailReg = new RegExp(/^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/);

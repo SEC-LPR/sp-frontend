@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Link,
     useHistory,
@@ -21,6 +21,8 @@ import * as api from 'src/utils/apiUtil';
 import UserExistErrorMessage from 'src/components/ErrorMessage/userExistError';
 import EmailErrorMessage from '../ErrorMessage/emailError';
 import PasswordErrorMessage from '../ErrorMessage/passwordError';
+import exchangeKey from 'src/components/Common/exchangeKey';
+import { encryptDES } from 'src/components/Common/useDES';
 
 const theme = createTheme();
 
@@ -32,10 +34,14 @@ const Register = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const username = data.get('email');
-        const firstName = data.get('firstName');
-        const lastName = data.get('lastName');
-        const password = data.get('password');
+        const username = encryptDES(data.get('email'));
+        const firstName = encryptDES(data.get('firstName'));
+        const lastName = encryptDES(data.get('lastName'));
+        const password = encryptDES(data.get('password'));
+        // const username = data.get('email');
+        // const firstName = data.get('firstName');
+        // const lastName = data.get('lastName');
+        // const password = data.get('password');
         try {
             const registerRes = await api.register({ username, firstName, lastName, password });
             if (registerRes.status === 200) {
@@ -47,6 +53,10 @@ const Register = () => {
             }
         }    
     }
+
+    useEffect(() => {
+        exchangeKey();
+    },[])
 
     const handleEmailChange = (event) => {
         const email = event.target.value;

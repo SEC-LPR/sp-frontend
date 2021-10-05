@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Link,
     useHistory,
@@ -21,7 +21,8 @@ import PaymentForm from './components/PaymentForm';
 import Review from './components/Review';
 import Copyright from 'src/components/Copyright';
 import * as api from 'src/utils/apiUtil';
-import * as useRSA from 'src/components/Common/useRSA';
+import exchangeKey from 'src/components/Common/exchangeKey';
+import { encryptionData } from 'src/components/Common/useRSA';
 
 const theme = createTheme();
 
@@ -31,22 +32,24 @@ const Checkout = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const cardName = useRSA.encryption(data.get('cardName'));
-        const cardNumber = useRSA.encryption(data.get('cardNumber'));
-        const expDate = useRSA.encryption(data.get('expDate'));
-        const cvv = useRSA.encryption(data.get('cvv'));
+        const name = data.get('cardName');
+        const number = data.get('cardNumber');
+        const date = data.get('expDate');
+        const c = data.get('cvv');
         const userId = localStorage.getItem("userId")
-
-        try {
-            const checkoutRes = await api.addCreditCard({userId, cardName, cardNumber, expDate, cvv});
-            if (checkoutRes.status === 200) {
-                history.push('/order-success');
-            }
-        } catch (error) {
-            if (error.response.status === 400) {
-                console.log('failed')
-            }
-        }
+        exchangeKey().then(function (result) {
+            const cardName = encryptionData(name, result);
+            const cardNumber = encryptionData(number, result);
+            const expDate = encryptionData(data, result);
+            const cvv = encryptionData(c, result);
+            console.log(cardName, cardNumber, expDate, cvv);
+            const checkoutRes = api.addCreditCard({ userId, cardName, cardNumber, expDate, cvv });
+            checkoutRes.then((r) => {
+                if (r.status === 200) {
+                    history.push('/order-success');
+                }
+            })
+        });
     };
     
     return (
