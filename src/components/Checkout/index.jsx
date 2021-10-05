@@ -40,7 +40,7 @@ const Checkout = () => {
         exchangeKey().then(function (result) {
             const cardName = encryptionData(name, result);
             const cardNumber = encryptionData(number, result);
-            const expDate = encryptionData(data, result);
+            const expDate = encryptionData(date, result);
             const cvv = encryptionData(c, result);
             console.log(cardName, cardNumber, expDate, cvv);
             const checkoutRes = api.addCreditCard({ userId, cardName, cardNumber, expDate, cvv });
@@ -48,7 +48,7 @@ const Checkout = () => {
                 if (r.status === 200) {
                     history.push('/order-success');
                 }
-            })
+            });
         });
     };
     
