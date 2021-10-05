@@ -35,15 +35,13 @@ export const removeItemFromCart = ({ userId, productId }) => axios({
 export const updateItemAmount = ({ userId, productId, amount }) => axios({
     method: 'put',
     url: `${baseUrl}/cart/${userId}/${productId}`,
-    data: {
-        userId,
-        productId,
+    params: {
         amount,
     }
 })
 
 export const addCreditCard = ({userId, cardName, cardNumber, expDate, cvv}) => axios({
-    method: 'put',
+    method: 'post',
     url: `${baseUrl}/${userId}/credit`,
     data: {
         cardName,

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Link,
+    useHistory,
 } from 'react-router-dom';
 import {
     AppBar,
@@ -24,6 +24,7 @@ import * as api from 'src/utils/apiUtil';
 const theme = createTheme();
 
 const Checkout = () => {
+    const history = useHistory();
     const items = JSON.parse(localStorage.getItem('items'));
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -31,14 +32,13 @@ const Checkout = () => {
         const cardName = data.get('cardName');
         const cardNumber = data.get('cardNumber');
         const expDate = data.get('expDate');
-        console.log(cardName)
         const cvv = data.get('cvv');
         const userId = localStorage.getItem("userId")
 
         try {
             const checkoutRes = await api.addCreditCard({userId, cardName, cardNumber, expDate, cvv});
             if (checkoutRes.status === 200) {
-                console.log('add success')
+                history.push('/order-success');
             }
         } catch (error) {
             if (error.response.status === 400) {
