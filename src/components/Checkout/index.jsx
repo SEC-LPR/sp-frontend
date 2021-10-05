@@ -49,7 +49,7 @@ const Checkout = () => {
                 }
                 orderLists.push(obj)
             })
-            const userId = encryptionData(userId, result);
+            const userId = encryptionData(id, result);
             api.addOrder({userId, orderLists});
             console.log(orderLists);
             // const total = encryptionData(calculateTotal(items).toFixed(2).toString(), result)
