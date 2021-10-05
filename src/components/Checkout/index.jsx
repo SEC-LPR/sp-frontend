@@ -40,22 +40,19 @@ const Checkout = () => {
         const id = localStorage.getItem("userId")
 
         exchangeKey().then(function (result) {
-            const orderLists = [];
+            const list = [];
             items.map((item) => {
                 let obj = {
                     productId: encryptionData(item.productId, result),
                     amount: encryptionData(item.amount,result),
                     price: encryptionData(item.price, result),
                 }
-                orderLists.push(obj)
+                list.push(obj)
             })
             const userId = encryptionData(id, result);
-            api.addOrder({userId, orderLists});
+            const price = encryptionData(calculateTotal(items).toFixed(2).toString(), result);
+            api.addOrder({userId, price, list});
             console.log(orderLists);
-            // const total = encryptionData(calculateTotal(items).toFixed(2).toString(), result)
-            // const id = encryptionData(userId, result);
-            // api.addOrder({ userId, total });
-
             //credit card
             // const cardName = encryptionData(name, result);
             // const cardNumber = encryptionData(number, result);
