@@ -37,24 +37,26 @@ const Checkout = () => {
         const number = data.get('cardNumber');
         const date = data.get('expDate');
         const c = data.get('cvv');
-        const userId = localStorage.getItem("userId")
+        const id = localStorage.getItem("userId")
 
         exchangeKey().then(function (result) {
-            // const orderLists = [];
-            // items.map((item) => {
-            //     let obj = {
-            //         productId: encryptionData(item.productId, result),
-            //         amount: encryptionData(item.amount,result),
-            //         price: encryptionData(item.price, result),
-            //     }
-            //     orderLists.push(obj)
-            // })
-            // api.addOrder({userId, orderLists});
-            // console.log(orderLists);
-            const total = encryptionData(calculateTotal(items).toFixed(2).toString(), result)
-            const id = encryptionData(userId, result);
-            api.addOrder({ userId, total });
+            const orderLists = [];
+            items.map((item) => {
+                let obj = {
+                    productId: encryptionData(item.productId, result),
+                    amount: encryptionData(item.amount,result),
+                    price: encryptionData(item.price, result),
+                }
+                orderLists.push(obj)
+            })
+            const userId = encryptionData(userId, result);
+            api.addOrder({userId, orderLists});
+            console.log(orderLists);
+            // const total = encryptionData(calculateTotal(items).toFixed(2).toString(), result)
+            // const id = encryptionData(userId, result);
+            // api.addOrder({ userId, total });
 
+            //credit card
             // const cardName = encryptionData(name, result);
             // const cardNumber = encryptionData(number, result);
             // const expDate = encryptionData(date, result);

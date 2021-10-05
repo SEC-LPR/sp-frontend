@@ -51,11 +51,11 @@ export const addCreditCard = ({userId, cardName, cardNumber, expDate, cvv}) => a
     }
 })
 
-export const addOrder = ({id, }) => axios({
+export const addOrder = ({userId, orderLists }) => axios({
     method: 'post',
-    url: `${baseUrl}/`,
+    url: `${baseUrl}/${userId}/order/create`,
     data: {
-        
+        orderLists,
     }
 })
 
