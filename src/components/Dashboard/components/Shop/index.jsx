@@ -6,7 +6,9 @@ import {
     CssBaseline,
     Typography,
     LinearProgress,
+    Button
 } from '@mui/material';
+import { useHistory } from 'react-router-dom';
 import AppleIcon from '@mui/icons-material/Apple';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from "react";
@@ -20,6 +22,7 @@ import { encryptDES } from 'src/components/Common/useDES';
 const theme = createTheme();
 
 const Shop = () => {
+    const history = useHistory();
     const [cartItems, setCartItems] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [full, setFull] = useState(false);
@@ -134,6 +137,13 @@ const Shop = () => {
         
     };
 
+    const logout = () => {
+        history.push('/');
+        localStorage.removeItem('isLogin');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('items');
+    }
+
     if (isLoading) return <LinearProgress />;
 
     return (
@@ -149,7 +159,7 @@ const Shop = () => {
             >
             <Toolbar>
                 <Typography variant="h6" color="inherit" noWrap>
-                <Avatar sx={{ m: 1, bgcolor: 'black' }}>
+                <Avatar sx={{ m: 1, bgcolor: 'black' }} onClick={logout} component={Button} >
                 <AppleIcon />          
                 </Avatar>
                 </Typography>
