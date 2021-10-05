@@ -51,13 +51,13 @@ export const addCreditCard = ({userId, cardName, cardNumber, expDate, cvv}) => a
     }
 })
 
-// export const addOrder = ({id, }) => axios({
-//     method: 'post',
-//     url: `${baseUrl}/`,
-//     data: {
+export const addOrder = ({id, }) => axios({
+    method: 'post',
+    url: `${baseUrl}/`,
+    data: {
         
-//     }
-// })
+    }
+})
 
 export const getRSA = () => axios({
     method: 'get',
