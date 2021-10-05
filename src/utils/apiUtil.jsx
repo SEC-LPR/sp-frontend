@@ -55,7 +55,8 @@ export const addOrder = ({userId, price, list }) => axios({
     method: 'post',
     url: `${baseUrl}/${userId}/order/create`,
     data: {
-        orderLists,
+        price,
+        list,
     }
 })
 

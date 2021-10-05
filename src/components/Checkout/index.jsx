@@ -23,6 +23,7 @@ import Copyright from 'src/components/Copyright';
 import * as api from 'src/utils/apiUtil';
 import exchangeKey from 'src/components/Common/exchangeKey';
 import { encryptionData } from 'src/components/Common/useRSA';
+import { encryptDES, decryptDES } from 'src/components/Common/useDES';
 
 const theme = createTheme();
 
@@ -41,30 +42,33 @@ const Checkout = () => {
 
         exchangeKey().then(function (result) {
             const list = [];
+
             items.map((item) => {
+                console.log(item);
                 let obj = {
-                    productId: encryptionData(item.productId, result),
-                    amount: encryptionData(item.amount,result),
-                    price: encryptionData(item.price, result),
+                    productId: encryptDES(item.productId.toString()),
+                    amount: encryptDES(item.amount.toString()),
+                    price: encryptDES(item.price.toString()),
                 }
                 list.push(obj)
             })
-            const userId = encryptionData(id, result);
-            const price = encryptionData(calculateTotal(items).toFixed(2).toString(), result);
+
+            const userId = encryptDES(id);
+            const price = encryptDES(calculateTotal(items).toFixed(2).toString());
             api.addOrder({userId, price, list});
-            console.log(orderLists);
-            //credit card
-            // const cardName = encryptionData(name, result);
-            // const cardNumber = encryptionData(number, result);
-            // const expDate = encryptionData(date, result);
-            // const cvv = encryptionData(c, result);
-            // console.log(cardName, cardNumber, expDate, cvv);
-            // const checkoutRes = api.addCreditCard({ userId, cardName, cardNumber, expDate, cvv });
-            // checkoutRes.then((r) => {
-            //     if (r.status === 200) {
-            //         history.push('/order-success');
-            //     }
-            // });
+            console.log("userid" + userId);
+            // credit card
+            const cardName = encryptDES(encryptionData(name, result));
+            const cardNumber = encryptDES(encryptionData(number, result));
+            const expDate = encryptDES(encryptionData(date, result));
+            const cvv = encryptDES(encryptionData(c, result));
+            console.log(cardName, cardNumber, expDate, cvv);
+            const checkoutRes = api.addCreditCard({ userId, cardName, cardNumber, expDate, cvv });
+            checkoutRes.then((r) => {
+                if (r.status === 200) {
+                    history.push('/order-success');
+                }
+            });
         });
     };
     
