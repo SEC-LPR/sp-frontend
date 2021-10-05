@@ -20,6 +20,7 @@ import PaymentForm from './components/PaymentForm';
 import Review from './components/Review';
 import Copyright from 'src/components/Copyright';
 import * as api from 'src/utils/apiUtil';
+import * as useRSA from 'src/components/Common/useRSA';
 
 const theme = createTheme();
 
@@ -29,10 +30,10 @@ const Checkout = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const cardName = data.get('cardName');
-        const cardNumber = data.get('cardNumber');
-        const expDate = data.get('expDate');
-        const cvv = data.get('cvv');
+        const cardName = useRSA.encryption(data.get('cardName'));
+        const cardNumber = useRSA.encryption(data.get('cardNumber'));
+        const expDate = useRSA.encryption(data.get('expDate'));
+        const cvv = useRSA.encryption(data.get('cvv'));
         const userId = localStorage.getItem("userId")
 
         try {

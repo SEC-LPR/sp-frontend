@@ -3,7 +3,7 @@ import CryptoJS from 'crypto-js';
 const key = 'DES_LPR_private_key';
 const keyHex = CryptoJS.enc.Utf8.parse(key);
 
-// 加密
+// Encryption
 const encryptDES = (message) => {
   if (message) {
     const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
@@ -15,7 +15,7 @@ const encryptDES = (message) => {
   return '';
 };
 
-// 解密
+// Decryption
 const decryptDES = (ciphertext) => {
   if (ciphertext) {
     const decrypted = CryptoJS.DES.decrypt({
