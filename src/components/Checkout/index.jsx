@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Link,
     useHistory,
 } from 'react-router-dom';
 import {
@@ -62,8 +63,10 @@ const Checkout = () => {
             >
             <Toolbar>
                 <Typography variant="h6" color="inherit" noWrap>
-                <Avatar sx={{ m: 1, bgcolor: 'black' }}>
-                <AppleIcon />          
+                    <Avatar sx={{ m: 1 }}>
+                    <Link to='/dashboard'>
+                        <AppleIcon />          
+                    </Link>
                 </Avatar>
                 </Typography>
             </Toolbar>

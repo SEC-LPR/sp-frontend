@@ -13,12 +13,14 @@ import { useState, useEffect } from "react";
 import '../Shop/Shop.scss';
 import Cart from "../Cart";
 import * as api from 'src/utils/apiUtil';
+import FullErrorMessage from 'src/components/ErrorMessage/fullError'
 
 const theme = createTheme();
 
 const Shop = () => {
     const [cartItems, setCartItems] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [full, setFull] = useState(false);
 
     const productData = [{"productId":1,"productName":"Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops","amount":10,"price":109},{"productId":2,"productName":"Mens Casual Premium Slim Fit T-Shirts","amount":5,"price":22},{"productId":3,"productName":"Mens Cotton Jacket","amount":1,"price":55}]
     
@@ -39,15 +41,21 @@ const Shop = () => {
         }
 
     useEffect(() => {
-       
         // setCartItems(productData);
         getCartData();
-        
     },[])
 
     const handleAddToCart = async (clickedItem) => {
+        console.log(clickedItem);
         setCartItems((prev) => {
-        const isItemInCart = prev.find((item) => item.productId === clickedItem.productId);
+            const isItemInCart = prev.find((item) => item.productId === clickedItem.productId);
+        if(isItemInCart.amount >= isItemInCart.productAmount) {
+            return prev.map((item) =>
+            item.productId === clickedItem.productId
+                ? { ...item, amount: item.amount }
+                : item
+            );
+        }
         if (isItemInCart) {
             return prev.map((item) =>
             item.productId === clickedItem.productId
@@ -60,9 +68,12 @@ const Shop = () => {
         
         
         const productId = clickedItem.productId;
-        const amount = clickedItem.amount + 1;
-        console.log(productId, amount)
+        if (clickedItem.amount +1 <= clickedItem.productAmount) {
+            const amount = clickedItem.amount + 1;
+            console.log(productId, amount)
         const userId = localStorage.getItem("userId");
+        // const getRSA = await api.getRSA();
+        // const exchangeDES = await api.exchangeDES();
         try {
             const updateRes = await api.updateItemAmount({ userId, productId, amount });
             if (updateRes.status === 200) {
@@ -73,6 +84,11 @@ const Shop = () => {
                 alert('update failed');
             }
         }
+        } else {
+            setFull(true)
+        }
+       
+       
     };
 
     const handleRemoveFromCart =async (id) => {
@@ -136,11 +152,13 @@ const Shop = () => {
                 </Typography>
             </Toolbar>
             </AppBar>
-        <div className="shop">
+            <div className="shop">
+            {full && <FullErrorMessage /> }
             <Cart
                 cartItems={cartItems}
                 addToCart={handleAddToCart}
                 removeFromCart={handleRemoveFromCart}
+                full={full}
             />
         </div>
         </ThemeProvider>

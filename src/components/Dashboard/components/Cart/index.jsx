@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useHistory} from 'react-router-dom';
 import { Button } from '@mui/material';
 import CartItem from "../CardItem";
@@ -25,16 +25,18 @@ const Cart = ({ cartItems, addToCart, removeFromCart }) => {
 
     return (
         <div className="cart">
-        <h2>Your Cart</h2>
+            <h2>Your Cart</h2>
         {cartItems.length === 0 ? <p>No items in cart.</p> : null}
         {cartItems.map((item) => (
+            <div key={item.productId}>
             <CartItem
-            key={item.productId}
             item={item}
             amount={item.amount} 
             addToCart={addToCart}
             removeFromCart={removeFromCart}
             />
+        </div>
+           
         ))}
             <h2>Total: ${calculateTotal(cartItems).toFixed(2)}</h2>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={checkout}>

@@ -58,3 +58,16 @@ export const addOrder = ({id, }) => axios({
         
     }
 })
+
+export const getRSA = () => axios({
+    method: 'get',
+    url: `${baseUrl}/rsa`,
+})
+
+export const exchangeDES = (key) => axios({
+    method: 'post',
+    url: `${baseUrl}/des`,
+    data: {
+        key,
+    }
+})

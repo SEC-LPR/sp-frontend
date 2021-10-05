@@ -4,14 +4,14 @@ import {
 } from '@mui/material';
 import 'src/components/ErrorMessage/error.scss'
 
-const EmailErrorMessage = () => {
+const FullErrorMessage = () => {
     return (
         <div className="error">
             <Typography>
-                Incorrect email format
+                The required quantity of goods has exceeded the inventory quantity
             </Typography>
         </div>
     )
 }
 
-export default EmailErrorMessage;
+export default FullErrorMessage;
